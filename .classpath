@@ -6,5 +6,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry exported="true" kind="lib" path="C:/Users/maria/Downloads/xstream-1.4.10/lib/xstream-1.4.10.jar" sourcepath="C:/Users/maria/.m2/repository/com/thoughtworks/xstream/xstream/1.4.10/xstream-1.4.10-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="C:/Users/maria/Downloads/xstream-1.4.10/lib/xstream/xpp3_min-1.1.4c.jar"/>
+	<classpathentry kind="lib" path="xmlpull-1.1.3.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
