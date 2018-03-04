@@ -54,4 +54,35 @@ public class CompraTest {
 		assertEquals(resultadoEsperado, comprasXml);	
 	}
 	
+	@Test
+	public void deveDesSerializarUmXmlGerandoComprasComProdutos() {
+		
+		String resultadoEsperado = "<compra>\n"+
+	            "  <id>15</id>\n"+
+	            "  <produtos>\n"+
+	            "    <produto codigo=\"1587\">\n"+
+	            "      <nome>geladeira</nome>\n"+
+	            "      <preco>1000.0</preco>\n"+
+	            "      <descrição>geladeira duas portas</descrição>\n"+
+	            "      <categoria>simples</categoria>\n" +
+	            "    </produto>\n"+
+	            "    <produto codigo=\"1588\">\n"+
+	            "      <nome>ferro de passar</nome>\n"+
+	            "      <preco>100.0</preco>\n"+
+	            "      <descrição>ferro com vaporizador</descrição>\n"+
+	            "      <categoria>simples</categoria>\n" +
+	            "    </produto>\n"+
+	            "  </produtos>\n"+
+	            "</compra>";
+		
+		XStream xtream = new XStream();
+		xtream.alias("produto", Produto.class);
+		xtream.alias("compra", Compra.class);
+		xtream.aliasField("descrição", Produto.class, "descricao");
+		xtream.useAttributeFor(Produto.class, "codigo");
+		
+		
+		
+		
+	}
 }
