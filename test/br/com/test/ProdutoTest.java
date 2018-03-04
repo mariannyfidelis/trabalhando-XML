@@ -22,7 +22,7 @@ public class ProdutoTest{
 		//Criando XStream
 		XStream xtream = new XStream();
 		
-		//renomeando a tag Produto e a tag Descrição
+		//Renomeando a tag Produto e a tag Descrição
 		xtream.alias("produto", Produto.class);
 		xtream.aliasField("descrição", Produto.class, "descricao");
 		xtream.useAttributeFor(Produto.class, "codigo");  //definindo um atributo
