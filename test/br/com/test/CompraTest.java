@@ -4,12 +4,9 @@ import java.util.List;
 import org.junit.Test;
 import br.com.xml.Compra;
 import br.com.xml.Produto;
-
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.util.ArrayList;
 import com.thoughtworks.xstream.XStream;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CompraTest {
 
@@ -75,14 +72,23 @@ public class CompraTest {
 	            "  </produtos>\n"+
 	            "</compra>";
 		
+		Produto geladeira = new Produto("geladeira", 1000.0,"geladeira duas portas","simples", 1587);
+		Produto ferro = new Produto("ferro de passar", 100.0,"ferro com vaporizador","simples", 1588);
+		List<Produto> produtos = new ArrayList<>();
+		produtos.add(geladeira);
+		produtos.add(ferro);
+		
+		Compra compraOrigem = new Compra(15, produtos);
+		
 		XStream xtream = new XStream();
 		xtream.alias("produto", Produto.class);
 		xtream.alias("compra", Compra.class);
 		xtream.aliasField("descrição", Produto.class, "descricao");
 		xtream.useAttributeFor(Produto.class, "codigo");
 		
-		
-		
+		Compra compraDeserializada = (Compra) xtream.fromXML(resultadoEsperado);
+				
+		assertEquals(compraDeserializada, compraOrigem );
 		
 	}
 }
