@@ -12,83 +12,69 @@ public class CompraTest {
 
 	@Test
 	public void deveSerializarComprasComProdutos() {
-		
-		String resultadoEsperado = "<compra>\n"+
-	            "  <id>15</id>\n"+
-	            "  <produtos>\n"+
-	            "    <produto codigo=\"1587\">\n"+
-	            "      <nome>geladeira</nome>\n"+
-	            "      <preco>1000.0</preco>\n"+
-	            "      <descrição>geladeira duas portas</descrição>\n"+
-	            "      <categoria>simples</categoria>\n" +
-	            "    </produto>\n"+
-	            "    <produto codigo=\"1588\">\n"+
-	            "      <nome>ferro de passar</nome>\n"+
-	            "      <preco>100.0</preco>\n"+
-	            "      <descrição>ferro com vaporizador</descrição>\n"+
-	            "      <categoria>simples</categoria>\n" +
-	            "    </produto>\n"+
-	            "  </produtos>\n"+
-	            "</compra>";
-		
-		Produto geladeira = new Produto("geladeira", 1000.0,"geladeira duas portas","simples", 1587);
-		Produto ferro = new Produto("ferro de passar", 100.0,"ferro com vaporizador","simples", 1588);
-		
-		List<Produto> produtos = new ArrayList<>();
-		produtos.add(geladeira);
-		produtos.add(ferro);
-		
-		Compra compra = new Compra(15, produtos);
-		
+
+		String resultadoEsperado = "<compra>\n" + "  <id>15</id>\n" + "  <produtos>\n"
+				+ "    <produto codigo=\"1587\">\n" + "      <nome>geladeira</nome>\n" + "      <preco>1000.0</preco>\n"
+				+ "      <descrição>geladeira duas portas</descrição>\n" + "      <categoria>simples</categoria>\n"
+				+ "    </produto>\n" + "    <produto codigo=\"1588\">\n" + "      <nome>ferro de passar</nome>\n"
+				+ "      <preco>100.0</preco>\n" + "      <descrição>ferro com vaporizador</descrição>\n"
+				+ "      <categoria>simples</categoria>\n" + "    </produto>\n" + "  </produtos>\n" + "</compra>";
+
+		Compra compra = compraGeladeiraEFerro();
+
+		XStream xtream = xtreamCompraEProduto();
+
+		String comprasXml = xtream.toXML(compra);
+
+		assertEquals(resultadoEsperado, comprasXml);
+	}
+
+	private XStream xtreamCompraEProduto() {
 		XStream xtream = new XStream();
 		xtream.alias("produto", Produto.class);
 		xtream.alias("compra", Compra.class);
 		xtream.aliasField("descrição", Produto.class, "descricao");
 		xtream.useAttributeFor(Produto.class, "codigo");
-		
-		String comprasXml = xtream.toXML(compra);
-		
-		assertEquals(resultadoEsperado, comprasXml);	
+		return xtream;
 	}
-	
+
 	@Test
 	public void deveDesSerializarUmXmlGerandoComprasComProdutos() {
-		
-		String resultadoEsperado = "<compra>\n"+
-	            "  <id>15</id>\n"+
-	            "  <produtos>\n"+
-	            "    <produto codigo=\"1587\">\n"+
-	            "      <nome>geladeira</nome>\n"+
-	            "      <preco>1000.0</preco>\n"+
-	            "      <descrição>geladeira duas portas</descrição>\n"+
-	            "      <categoria>simples</categoria>\n" +
-	            "    </produto>\n"+
-	            "    <produto codigo=\"1588\">\n"+
-	            "      <nome>ferro de passar</nome>\n"+
-	            "      <preco>100.0</preco>\n"+
-	            "      <descrição>ferro com vaporizador</descrição>\n"+
-	            "      <categoria>simples</categoria>\n" +
-	            "    </produto>\n"+
-	            "  </produtos>\n"+
-	            "</compra>";
-		
-		Produto geladeira = new Produto("geladeira", 1000.0,"geladeira duas portas","simples", 1587);
-		Produto ferro = new Produto("ferro de passar", 100.0,"ferro com vaporizador","simples", 1588);
+
+		String resultadoEsperado = "<compra>\n" + "  <id>15</id>\n" + "  <produtos>\n"
+				+ "    <produto codigo=\"1587\">\n" + "      <nome>geladeira</nome>\n" + "      <preco>1000.0</preco>\n"
+				+ "      <descrição>geladeira duas portas</descrição>\n" + "      <categoria>simples</categoria>\n"
+				+ "    </produto>\n" + "    <produto codigo=\"1588\">\n" + "      <nome>ferro de passar</nome>\n"
+				+ "      <preco>100.0</preco>\n" + "      <descrição>ferro com vaporizador</descrição>\n"
+				+ "      <categoria>simples</categoria>\n" + "    </produto>\n" + "  </produtos>\n" + "</compra>";
+
+		Compra compraOrigem = compraGeladeiraEFerro();
+
+		XStream xtream = xtreamCompraEProduto();
+
+		Compra compraDeserializada = (Compra) xtream.fromXML(resultadoEsperado);
+
+		assertEquals(compraDeserializada, compraOrigem);
+
+	}
+
+	private Compra compraGeladeiraEFerro() {
+		Produto geladeira = geladeira();
+		Produto ferro = ferro();
+
 		List<Produto> produtos = new ArrayList<>();
 		produtos.add(geladeira);
 		produtos.add(ferro);
-		
-		Compra compraOrigem = new Compra(15, produtos);
-		
-		XStream xtream = new XStream();
-		xtream.alias("produto", Produto.class);
-		xtream.alias("compra", Compra.class);
-		xtream.aliasField("descrição", Produto.class, "descricao");
-		xtream.useAttributeFor(Produto.class, "codigo");
-		
-		Compra compraDeserializada = (Compra) xtream.fromXML(resultadoEsperado);
-				
-		assertEquals(compraDeserializada, compraOrigem );
-		
+
+		Compra compra = new Compra(15, produtos);
+		return compra;
+	}
+
+	private Produto ferro() {
+		return new Produto("ferro de passar", 100.0, "ferro com vaporizador", "simples", 1588);
+	}
+
+	private Produto geladeira() {
+		return new Produto("geladeira", 1000.0, "geladeira duas portas", "simples", 1587);
 	}
 }
