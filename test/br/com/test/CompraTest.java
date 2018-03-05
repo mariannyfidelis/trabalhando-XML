@@ -22,20 +22,20 @@ public class CompraTest {
 
 		Compra compra = compraGeladeiraEFerro();
 
-		XStream xtream = xtreamCompraEProduto();
+		XStream xstream = xtreamCompraEProduto();
 
-		String comprasXml = xtream.toXML(compra);
+		String comprasXml = xstream.toXML(compra);
 
 		assertEquals(resultadoEsperado, comprasXml);
 	}
 
 	private XStream xtreamCompraEProduto() {
-		XStream xtream = new XStream();
-		xtream.alias("produto", Produto.class);
-		xtream.alias("compra", Compra.class);
-		xtream.aliasField("descrição", Produto.class, "descricao");
-		xtream.useAttributeFor(Produto.class, "codigo");
-		return xtream;
+		XStream xstream = new XStream();
+		xstream.alias("produto", Produto.class);
+		xstream.alias("compra", Compra.class);
+		xstream.aliasField("descrição", Produto.class, "descricao");
+		xstream.useAttributeFor(Produto.class, "codigo");
+		return xstream;
 	}
 
 	@Test
@@ -80,14 +80,13 @@ public class CompraTest {
 		        + "</compra>";
 		
 		Compra compra = compraDuasGeladeirasIguais();
-		XStream xtream = xtreamCompraEProduto();
-		xtream.setMode(XStream.NO_REFERENCES);
-		String xmlGerado = xtream.toXML(compra);
+		XStream xstream = xtreamCompraEProduto();
+		xstream.setMode(XStream.NO_REFERENCES);
+		String xmlGerado = xstream.toXML(compra);
 		
 		assertEquals(resultadoEsperado, xmlGerado);
-		
 	}
-
+	
 	private Compra compraGeladeiraEFerro() {
 		Produto geladeira = geladeira();
 		Produto ferro = ferro();
@@ -117,6 +116,5 @@ public class CompraTest {
 		Compra compra = new Compra(15, produtos);
 		
 		return compra;
-
 	}
 }
