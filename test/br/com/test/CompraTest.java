@@ -59,7 +59,7 @@ public class CompraTest {
 	}
 	
 	@Test
-	public void deveSerializarDuasGeladeiras() {
+	public void deveSerializarDuasGeladeirasIguais() {
 		
 		String resultadoEsperado = "<compra>\n" 
 		        + "  <id>15</id>\n"
@@ -82,6 +82,34 @@ public class CompraTest {
 		Compra compra = compraDuasGeladeirasIguais();
 		XStream xstream = xtreamCompraEProduto();
 		xstream.setMode(XStream.NO_REFERENCES);
+		String xmlGerado = xstream.toXML(compra);
+		
+		assertEquals(resultadoEsperado, xmlGerado);
+	}
+	
+	@Test
+	public void deveSerializarComColecoesImplicitas() {
+		
+		String resultadoEsperado = "<compra>\n" 
+		        + "  <id>15</id>\n"
+		        + "  <produto codigo=\"1587\">\n"
+		        + "    <nome>geladeira</nome>\n"
+		        + "    <preco>1000.0</preco>\n"
+		        + "    <descrição>geladeira duas portas</descrição>\n"
+		        + "    <categoria>simples</categoria>\n"
+		        + "  </produto>\n"
+		        + "  <produto codigo=\"1587\">\n"
+		        + "    <nome>geladeira</nome>\n"
+		        + "    <preco>1000.0</preco>\n"
+		        + "    <descrição>geladeira duas portas</descrição>\n"
+		        + "    <categoria>simples</categoria>\n"
+		        + "  </produto>\n"
+		        + "</compra>";
+		
+		Compra compra = compraDuasGeladeirasIguais();
+		XStream xstream = xtreamCompraEProduto();
+		xstream.setMode(XStream.NO_REFERENCES);
+		xstream.addImplicitCollection(Compra.class, "produtos");
 		String xmlGerado = xstream.toXML(compra);
 		
 		assertEquals(resultadoEsperado, xmlGerado);
