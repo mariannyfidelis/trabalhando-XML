@@ -1,8 +1,14 @@
 package br.com.test;
 
 import org.junit.Test;
+
+import br.com.xml.PrecoConverter;
 import br.com.xml.Produto;
+import br.com.xml.SingleConverter;
+
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.SingleValueConverter;
+
 import static org.junit.Assert.assertEquals;
 
 public class ProdutoTest{
@@ -12,22 +18,21 @@ public class ProdutoTest{
 		
 		String resultadoEsperado = "<produto codigo=\"1587\">\n" +
 		        "  <nome>geladeira</nome>\n" +
-		        "  <preco>1000.0</preco>\n" +
+		        "  <preco>R$ 1.000,00</preco>\n" +
 		        "  <descrição>geladeira duas portas</descrição>\n" +
 		        "  <categoria>simples</categoria>\n" +
 		        "</produto>";
 		
 		Produto geladeira = new Produto("geladeira", 1000.0,"geladeira duas portas","simples", 1587);
 		
-		//Criando XStream
-		XStream xtream = new XStream();
+		XStream xstream = new XStream();
+		xstream.alias("produto", Produto.class);
+		xstream.aliasField("descrição", Produto.class, "descricao");
+		xstream.useAttributeFor(Produto.class, "codigo"); 
+		//xstream.registerLocalConverter(Produto.class, "preco", new PrecoConverter());
+		xstream.registerLocalConverter(Produto.class, "preco", new SingleConverter());
 		
-		//Renomeando a tag Produto e a tag Descrição
-		xtream.alias("produto", Produto.class);
-		xtream.aliasField("descrição", Produto.class, "descricao");
-		xtream.useAttributeFor(Produto.class, "codigo");  //definindo um atributo
-		
-		String xmlGerado = xtream.toXML(geladeira);
+		String xmlGerado = xstream.toXML(geladeira);
 		
 		System.out.println("RESULTADO ESPERADO");
 		System.out.print(resultadoEsperado);
@@ -36,7 +41,5 @@ public class ProdutoTest{
 		System.out.print(xmlGerado);
 		
 		assertEquals(resultadoEsperado, xmlGerado);
-		
 	}
-	
 }
